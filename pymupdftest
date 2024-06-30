@@ -1,7 +1,9 @@
 import fitz
+import re
 
 output = open("output.txt", "w")
 pages = open("pages.txt", "w")
+textArray = []
 
 
 pdf_path = 'hamlet.pdf'
@@ -9,13 +11,43 @@ document = fitz.open(pdf_path)
 
 for page_num in range(len(document)):
     page = document.load_page(page_num)
-    pages.write(str(page)+"\n")
     text = page.get_text("dict")
     for block in text["blocks"]:
         if "lines" in block:
             for line in block["lines"]:
                 for span in line["spans"]:
-                    output.write(f"Text: {span['text']}, Font: {span['font']}, Size: {span['size']}\n")
+                    textArray.append([span["text"],span["font"]])
+
+# Clean Array
+
+cleanArray = []
+
+# Remove Page Numbers
+
+for item in textArray:
+    if item[0].isdigit():
+        continue
+    else:
+        cleanArray.append(item)
+
+# Remove Stage Directions
+
+tempArray = cleanArray
+cleanArray = []
+
+for item in tempArray:
+    if item[1] == "Helvetica-Oblique":
+        continue
+    else: 
+        cleanArray.append(item)
+
+# Write to Output
+
+for item in cleanArray:
+    output.write(str(item)+"\n")
+
+
+
 
 output.close()
 pages.close()
