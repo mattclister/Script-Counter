@@ -1,7 +1,7 @@
 from PyPDF2 import PdfReader
 import PySimpleGUI as sg
 
-reader = PdfReader("hamlet 2.pdf")
+reader = PdfReader("hamlet.pdf")
 
 length = (len(reader.pages)) 
 
@@ -35,12 +35,14 @@ for page in pageArray:
     pageLine = page.split("\n")
     pageLineArray.append(pageLine)
 
+print(pageLineArray)
+
 for pageLine in pageLineArray:
     for index, line in enumerate(pageLine):
         if line in characterDict:
-            splitLine = line.split(" ")
+            nextLine = (pageLine[index+1])
+            splitLine = nextLine.split(" ")
             lineLength = len(splitLine)
-            print(pageLine[index+1])
             characterDict[line] += lineLength
 
-print (characterDict)
+print(characterDict)
