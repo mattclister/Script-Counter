@@ -8,7 +8,7 @@ end = 142
 characters = {
     "KING CLAUDIUS": 0,
     "HAMLET": 0,
-    "POLONIUS": 0,
+    "LORD POLONIUS": 0,
     "HORATIO": 0,
     "LAERTES": 0,
     "LUCIANUS": 0,
@@ -23,8 +23,18 @@ characters = {
     "REYNALDO": 0,
     "FORTINBRAS": 0,
     "QUEEN GERTRUDE": 0,
-    "OPHELIA": 0
+    "OPHELIA": 0,
+    "PRINCE FORTINBRAS": 0
 }
+
+exclude_list = [
+    "HAMLET - Act I",
+    "HAMLET - Act II",
+    "HAMLET - Act III",
+    "HAMLET - Act IV",
+    "HAMLET - Act V",
+    "HAMLET - Act VI"
+]
 
 pdf_path = 'hamlet.pdf'
 document = fitz.open(pdf_path)
@@ -61,6 +71,17 @@ for item in tempArray:
     else: 
         cleanArray.append(item)
 
+# Remove Excludes
+
+tempArray = cleanArray
+cleanArray = []
+
+for item in tempArray:
+    if item[0] in exclude_list:
+        continue
+    else: 
+        cleanArray.append(item)
+
 # Sort text into character arrays
 
 characterLinesArray = []
@@ -84,7 +105,6 @@ for item in cleanArray:
         continue
 
 # Join Lines
-
 characterLinesArrayJoined = []
 
 for item in characterLinesArray:
