@@ -2,14 +2,34 @@ import fitz
 import re
 
 output = open("output.txt", "w")
-pages = open("pages.txt", "w")
 textArray = []
-
+start = 5
+end = 142
+characters = {
+    "KING CLAUDIUS": 0,
+    "HAMLET": 0,
+    "POLONIUS": 0,
+    "HORATIO": 0,
+    "LAERTES": 0,
+    "LUCIANUS": 0,
+    "VOLTIMAND": 0,
+    "CORNELIUS": 0,
+    "ROSENCRANTZ": 0,
+    "GUILDENSTERN": 0,
+    "OSRIC": 0,
+    "MARCELLUS": 0,
+    "BERNARDO": 0,
+    "FRANCISCO": 0,
+    "REYNALDO": 0,
+    "FORTINBRAS": 0,
+    "QUEEN GERTRUDE": 0,
+    "OPHELIA": 0
+}
 
 pdf_path = 'hamlet.pdf'
 document = fitz.open(pdf_path)
 
-for page_num in range(len(document)):
+for page_num in range(start,end):
     page = document.load_page(page_num)
     text = page.get_text("dict")
     for block in text["blocks"]:
@@ -41,13 +61,44 @@ for item in tempArray:
     else: 
         cleanArray.append(item)
 
-# Write to Output
+# Sort text into character arrays
 
+characterLinesArray = []
+character = ""
+tempCharacterArray = []
 for item in cleanArray:
+    if character == "" and item[0] in characters:
+        character = item[0]
+        tempCharacterArray.append(item[0])
+        continue
+    elif character != "" and item[0] in characters:
+        characterLinesArray.append(tempCharacterArray)
+        tempCharacterArray = []
+        character = item[0]
+        tempCharacterArray.append(item[0])
+        continue
+    elif character == "" and item[0] not in characters:
+        continue
+    elif character != "" and item[0] not in characters:
+        tempCharacterArray.append(item[0])
+        continue
+
+# Join Lines
+
+characterLinesArrayJoined = []
+
+for item in characterLinesArray:
+    temp = [item[0],(" ".join(item[1:]))]
+    temp.append(len((temp[1].split(" "))))
+    characterLinesArrayJoined.append(temp)
+    
+for item in characterLinesArrayJoined:
     output.write(str(item)+"\n")
 
+# Count Lines
+for item in characterLinesArrayJoined:
+    characters[item[0]] += int(item[2])
 
-
+output.write(str(characters))
 
 output.close()
-pages.close()
