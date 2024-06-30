@@ -3,40 +3,31 @@ import re
 
 output = open("output.txt", "w")
 textArray = []
-start = 5
-end = 142
+start = 8
+end = 95
 characters = {
-    "KING CLAUDIUS": 0,
-    "HAMLET": 0,
-    "LORD POLONIUS": 0,
-    "HORATIO": 0,
-    "LAERTES": 0,
-    "LUCIANUS": 0,
-    "VOLTIMAND": 0,
-    "CORNELIUS": 0,
-    "ROSENCRANTZ": 0,
-    "GUILDENSTERN": 0,
-    "OSRIC": 0,
-    "MARCELLUS": 0,
-    "BERNARDO": 0,
-    "FRANCISCO": 0,
-    "REYNALDO": 0,
-    "FORTINBRAS": 0,
-    "QUEEN GERTRUDE": 0,
-    "OPHELIA": 0,
-    "PRINCE FORTINBRAS": 0
+    "MALVOLIO": 0,
+    "SIR ANDREW AGUECHEEK": 0,
+    "SIR TOBY BELCH": 0,
+    "MARIA": 0,
+    "FOOL": 0,
+    "FABIAN": 0,
+    "ORSINO": 0,
+    "VALENTINE": 0,
+    "CURIO": 0,
+    "SEBASTIAN": 0,
+    "ANTONIO": 0,
+    "CAPTAIN": 0,
+    "PRIEST": 0,
+    "VIOLA": 0,
+    "TOBY": 0,
+    "ANDREW": 0,
 }
 
 exclude_list = [
-    "HAMLET - Act I",
-    "HAMLET - Act II",
-    "HAMLET - Act III",
-    "HAMLET - Act IV",
-    "HAMLET - Act V",
-    "HAMLET - Act VI"
 ]
 
-pdf_path = 'hamlet.pdf'
+pdf_path = 'twelfth-night.pdf'
 document = fitz.open(pdf_path)
 
 for page_num in range(start,end):
@@ -47,6 +38,8 @@ for page_num in range(start,end):
             for line in block["lines"]:
                 for span in line["spans"]:
                     textArray.append([span["text"],span["font"]])
+
+print(textArray)
 
 # Clean Array
 
@@ -62,14 +55,14 @@ for item in textArray:
 
 # Remove Stage Directions
 
-tempArray = cleanArray
-cleanArray = []
+# tempArray = cleanArray
+# cleanArray = []
 
-for item in tempArray:
-    if item[1] == "Helvetica-Oblique":
-        continue
-    else: 
-        cleanArray.append(item)
+# for item in tempArray:
+#     if item[1] == "Helvetica-Oblique":
+#         continue
+#     else: 
+#         cleanArray.append(item)
 
 # Remove Excludes
 
