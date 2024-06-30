@@ -1,0 +1,21 @@
+import fitz
+
+output = open("output.txt", "w")
+pages = open("pages.txt", "w")
+
+
+pdf_path = 'hamlet.pdf'
+document = fitz.open(pdf_path)
+
+for page_num in range(len(document)):
+    page = document.load_page(page_num)
+    pages.write(str(page)+"\n")
+    text = page.get_text("dict")
+    for block in text["blocks"]:
+        if "lines" in block:
+            for line in block["lines"]:
+                for span in line["spans"]:
+                    output.write(f"Text: {span['text']}, Font: {span['font']}, Size: {span['size']}\n")
+
+output.close()
+pages.close()
